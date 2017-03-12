@@ -1,9 +1,16 @@
 
 
 var nodeMailer = require('nodemailer');
-var properties = require('./properties.js');
+var properties;
 
-var mailService = function () {
+var MailService = function (config) {
+    if (config !== undefined) {
+        properties = config;
+    }
+    if (properties === undefined) {
+        console.log('MailService -> properties have not been configured');
+        return;
+    }
     this.transport = nodeMailer.createTransport(({
         service: 'gmail',
         auth: {
@@ -13,7 +20,7 @@ var mailService = function () {
     }));
 }
 
-mailService.prototype.sendVerficationEmail = function (newUser, cb) {
+MailService.prototype.sendVerficationEmail = function (newUser, cb) {
     var domain = process.env.OPENSHIFT_APP_DNS || "localhost:4000";
     var message = {
         // sender info
@@ -40,7 +47,7 @@ mailService.prototype.sendVerficationEmail = function (newUser, cb) {
     });
 }
 
-mailService.prototype.sendForgotPasswordEmail = function (user, cb) {
+MailService.prototype.sendForgotPasswordEmail = function (user, cb) {
     var domain = process.env.OPENSHIFT_APP_DNS || "localhost:4000";
     var message = {
         // sender info
@@ -66,7 +73,7 @@ mailService.prototype.sendForgotPasswordEmail = function (user, cb) {
     });
 }
 
-mailService.prototype.sendMessage = function (message, cb) {
+MailService.prototype.sendMessage = function (message, cb) {
     this.transport.sendMail(message, function (error) {
         if (error) {
             console.log('NodeMailerConfig -> sendMessage -> error');
@@ -77,4 +84,4 @@ mailService.prototype.sendMessage = function (message, cb) {
     });
 }
 
-module.exports = new mailService();
+module.exports = MailService;

@@ -1,8 +1,7 @@
 
 var mongoose = require("mongoose");
-var db = require("../config/DatabaseConfig.js");
 var bcrypt = require('bcrypt-nodejs');
-var mailService = require('../config/NodeMailerConfig');
+var mailService = new require('../config/MailService')();
 var crypto = require('crypto');
 
 var UserSchema = new mongoose.Schema({

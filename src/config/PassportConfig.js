@@ -6,10 +6,9 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var InstagramStrategy = require('passport-instagram').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var UserDao = require('../database/UserDao');
-var mailService = require('../config/NodeMailerConfig');
-var properties = require('./properties');
+var mailService = new require('../config/MailService')();
 
-module.exports = function (app) {
+module.exports = function (app, properties) {
 
   app.use(passport.initialize());
   app.use(passport.session());

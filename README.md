@@ -1,32 +1,44 @@
-# Base
-
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.25.5.
-
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to GitHub Pages
-
-Run `ng github-pages:deploy` to deploy to GitHub Pages.
-
-## Further help
-
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 # Social-Login
+'
+var properties = {
+        // session properties
+        session: {
+            SECRET: "YqcPmjUVLx.YJo^7HJdT3j4HvHopw^",
+            DB_EXPIRE: 14 * 24 * 60 * 60,
+            EXPIRE: 4 * 60 * 60 * 1000,
+            SECURE: isProd,
+            PROXY: isProd
+        },
+
+        // email
+        email: {
+            USERNAME: 'notificationdashboard@gmail.com',
+            PASSWORD: 'hx(iuTiW8$GG7=zy3bjz'
+        },
+        // facebook
+        facebook: {
+            APP_ID: 326680404375212,
+            APP_SECRET: "94dcd6776851c2d497eb01911ea353c8",
+            CALLBACK_URL: appUrl + "/facebook/callback"
+        },
+
+        twitter: {
+            APP_ID: "RClSygJoHyzEWj7NZloS9WjZC",
+            APP_SECRET: "dGiG49ZJx7cJp6TGjcn2rswlrhEAFwD4ywoHRzOjeLrnJXPGfi",
+            CALLBACK_URL: appUrl + "/twitter/callback"
+        },
+
+        instagram: {
+            APP_ID: "4ba35cba98c94de98f631e44a71ab555",
+            APP_SECRET: "2d3cf740801e441598a5b0d78b430a7a",
+            CALLBACK_URL: appUrl + "/instagram/callback"
+        },
+
+        google: {
+            APP_ID: "307471399050-sitajpd4uimvaf5ef5b6ieu71vftch7f.apps.googleusercontent.com",
+            APP_SECRET: "rja0-2wUPSDDB1QpFQWapys2",
+            CALLBACK_URL: appUrl + "/google/callback"
+        }
+
+    };
+'

@@ -1,7 +1,6 @@
 
 
 var mongoose = require("mongoose");
-var db = require("../config/DatabaseConfig.js");
 
 const LoginsSchema = new mongoose.Schema({
     identityKey: {

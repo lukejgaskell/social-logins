@@ -2,10 +2,8 @@
 
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-var db = require('./DatabaseConfig.js');
-var properties = require("./properties.js");
 
-module.exports = function SessionConfig(app) {
+module.exports = function SessionConfig(app, properties, db) {
 
     session.Session.prototype.login = function (user, cb) {
         const req = this.req;
