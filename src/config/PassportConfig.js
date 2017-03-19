@@ -5,7 +5,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var InstagramStrategy = require('passport-instagram').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var UserDao = require('../database/UserDao');
+var User = require('../models/user');
 var mailService = new require('../config/MailService')();
 
 module.exports = function (app, properties) {
@@ -20,7 +20,7 @@ module.exports = function (app, properties) {
 
   passport.deserializeUser(function (user, done) {
     console.log("deserializing user");
-    UserDao.findOne(user, function (err, user) {
+    User.findOne(user, function (err, user) {
       done(err, user);
     });
   });
@@ -31,12 +31,12 @@ module.exports = function (app, properties) {
   },
     function (email, password, done) {
       console.log('PassportConfig -> local-login -> called');
-      UserDao.findOne({ email: email }, function (err, user) {
+      User.findOne({ email: email }, function (err, user) {
         if (err) {
           console.log('PassportConfig -> local-login -> error: ' + err);
           return done(err);
         }
-        if (!user || !UserDao.validPassword(user, password)) {
+        if (!user || !User.validPassword(user, password)) {
           console.log('PassportConfig -> local-login -> invalid username or password');
           return done(null, false, {
             message: "Invalid username or password"
@@ -61,7 +61,7 @@ module.exports = function (app, properties) {
   },
     function (req, email, password, done) {
       console.log('PassportConfig -> local-register -> called');
-      UserDao.findOne({ email: email }, function (err, user) {
+      User.findOne({ email: email }, function (err, user) {
         if (err) {
           console.log('PassportConfig -> local-register -> error: ' + err);
           return done(err);
@@ -73,7 +73,7 @@ module.exports = function (app, properties) {
           });
         }
 
-        UserDao.register(req.body, done);
+        User.register(req.body, done);
       });
     }
   ));
@@ -87,7 +87,7 @@ module.exports = function (app, properties) {
     function (req, accessToken, refreshToken, profile, done) {
       console.log('PassportConfig -> facebook-authorize -> called');
       process.nextTick(function () {
-        UserDao.activateFacebook(req.user, accessToken, profile, done);
+        User.activateFacebook(req.user, accessToken, profile, done);
       });
     }
   ));
@@ -101,7 +101,7 @@ module.exports = function (app, properties) {
     function (req, accessToken, refreshToken, profile, done) {
       console.log('PassportConfig -> twitter-authorize -> called');
       process.nextTick(function () {
-        UserDao.activateTwitter(req.user, accessToken, profile, done);
+        User.activateTwitter(req.user, accessToken, profile, done);
       });
     }
   ));
@@ -116,7 +116,7 @@ module.exports = function (app, properties) {
     function (req, accessToken, refreshToken, profile, done) {
       console.log('PassportConfig -> twitter-authorize -> called');
       process.nextTick(function () {
-        UserDao.activateInstagram(req.user, accessToken, profile, done);
+        User.activateInstagram(req.user, accessToken, profile, done);
       });
     }
   ));
@@ -130,7 +130,7 @@ module.exports = function (app, properties) {
     function (req, accessToken, refreshToken, profile, done) {
       console.log('PassportConfig -> google-authorize -> called');
       process.nextTick(function () {
-        UserDao.activateGoogle(req.user, accessToken, profile, done);
+        User.activateGoogle(req.user, accessToken, profile, done);
       });
     }
   ));

@@ -1,6 +1,6 @@
 
 var isAuthenticated = require('./UserService.js');
-var UserDao = require('../database/UserDao');
+var UserDao = require('../models/user');
 
 module.exports = function (app) {
 

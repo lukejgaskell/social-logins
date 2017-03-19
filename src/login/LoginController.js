@@ -1,8 +1,8 @@
 
 
 var passport = require('passport');
-var UserDao = require('../database/UserDao');
-var LoginsDao = require('../database/LoginsDao');
+var UserDao = require('../models/user');
+var LoginsDao = require('../models/login');
 
 module.exports = function (app) {
 

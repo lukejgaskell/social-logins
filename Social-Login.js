@@ -1,5 +1,10 @@
 
-module.exports = function (app, properties, db, mongoose) {
+
+var SocialLogin = function() {
+    this.models = {};
+}
+
+SocialLogin.prototype.init = function (app, properties, db, mongoose) {
 
   var cookieParser = require('cookie-parser');
   var bodyParser = require('body-parser');
@@ -15,8 +20,10 @@ module.exports = function (app, properties, db, mongoose) {
   require("./src/config/SessionConfig.js")(app, properties, db);
   require("./src/config/PassportConfig.js")(app, properties);
   require("./src/routes.js")(app);
-
+  
   this.models = {
         User : mongoose.model("User")
     }
 }
+
+module.exports = new SocialLogin();
