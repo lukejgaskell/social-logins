@@ -325,6 +325,4 @@ var generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(90), null);
 };
 
-var user = mongoose.model('User', UserSchema);
-
-module.exports = user;
+module.exports = mongoose.model('User', UserSchema);

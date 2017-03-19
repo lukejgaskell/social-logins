@@ -1,5 +1,5 @@
 
-module.exports = function (app, properties, db) {
+module.exports = function (app, properties, db, mongoose) {
 
   var cookieParser = require('cookie-parser');
   var bodyParser = require('body-parser');
@@ -15,4 +15,8 @@ module.exports = function (app, properties, db) {
   require("./src/config/SessionConfig.js")(app, properties, db);
   require("./src/config/PassportConfig.js")(app, properties);
   require("./src/routes.js")(app);
+
+  this.models = {
+        User : mongoose.model("User")
+    }
 }

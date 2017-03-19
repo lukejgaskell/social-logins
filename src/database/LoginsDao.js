@@ -73,7 +73,4 @@ LoginsSchema.static("successfulLoginAttempt", function (key) {
     }
 });
 
-var loginsDao = mongoose.model('LoginsDao', LoginsSchema);
-
-
-module.exports = loginsDao;
+module.exports = mongoose.model('LoginsDao', LoginsSchema);
