@@ -1,10 +1,20 @@
 
+var FacebookController = require("./controllers/FacebookController.js");
+var TwitterController = require("./controllers/TwitterController.js");
+var InstagramController = require("./controllers/InstagramController.js");
+var GoogleController = require("./controllers/GoogleController.js");
+var LoginController = require("./controllers/LoginController.js");
+var UserController = require("./controllers/UserController.js");
 
-module.exports = function(app) {
-    require("./login/LoginController.js")(app);
-    require("./user/UserController.js")(app);
-    require("./integrations/FacebookController.js")(app);
-    require("./integrations/TwitterController.js")(app);
-    require("./integrations/InstagramController.js")(app);
-    require("./integrations/GoogleController.js")(app);
+class Routes {
+    createRoutes(app) {
+        LoginController.createRoute(app);
+        UserController.createRoute(app);
+        FacebookController.createRoute(app);
+        TwitterController.createRoute(app);
+        InstagramController.createRoute(app);
+        GoogleController.createRoute(app);
+    }
 }
+
+module.exports = new Routes();

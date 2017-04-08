@@ -7,15 +7,8 @@ var properties = require('./properties.js');
 var db = require('./DatabaseConfig');
 var mongoose = require('mongoose');
 
-var SocialLogin = require('./Social-Login');
+var SocialLogin = require('./social-login');
 SocialLogin.init(app, properties, db, mongoose);
-
-SocialLogin.models.User.findOne("lukejgaskell@gmail.com", function(err, user) {
-         if (err)
-             console.log("there was an error"); //do something else to handle the error
-         else
-             console.log("no error");
-    });
 
 app.listen(server_port, server_ipaddress, function() { 
   console.log('TestApp listening on port ' + server_port + '!');

@@ -1,21 +1,24 @@
 
-var isAuthenticated = require('./UserService.js');
-var UserDao = require('../models/user');
+var isAuthenticated = require('../user/UserService.js');
+var Users = require('../models/users');
 
-module.exports = function (app) {
+class UserController {
+    createRoute(app) {
+        app.get("/api/user", isAuthenticated, this.getUser);
+        app.post("/api/user/revokeAuth", isAuthenticated, this.revokeAuth);
+    }
 
-    
-    app.get("/api/user", isAuthenticated, function (req, res) {
-        res.json({ fullName: req.user.fullName,
+    getUser(req, res) {
+       return res.json({ fullName: req.user.fullName,
                     facebookAuth: req.user.facebook.accessToken !== undefined,
                     twitterAuth: req.user.twitter.accessToken !== undefined,
                     instagramAuth: req.user.instagram.accessToken !== undefined,
                     googleAuth: req.user.google.accessToken !== undefined
                 });
-    });
+    }
 
-    app.post("/api/user/revokeAuth", isAuthenticated, function (req, res) {
-        UserDao.revokeAuth(req.user, req.body, function (err, user, info) {
+    revokeAuth(req, res) {
+        Users.revokeAuth(req.user, req.body, function (err, user, info) {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -24,5 +27,8 @@ module.exports = function (app) {
             }
             res.sendStatus(200);
         });
-    });
+    }
 }
+
+
+module.exports = new UserController();
