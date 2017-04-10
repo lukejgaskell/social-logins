@@ -5,68 +5,30 @@ var isAuthenticated = require('../user/UserService');
 class TwitterController {
     createRoute(app) {
         app.get('/api/twitter/auth', passport.authenticate('twitter'), this.twitterAuth);
-        app.get('/api/twitter/auth/callback', passport.authenticate('twitter'), this.twitterAuthCallback);
+        app.get('/api/twitter/callback', passport.authenticate('twitter'), this.twitterCallback);
         app.get('/api/twitter/connect', isAuthenticated, passport.authorize('twitter'), this.twitterConnect);
-        app.get('/api/twitter/connect/callback', passport.authorize('twitter'), this.twitterConnectCallback);
     }
 
     twitterAuth(req, res) {
         console.log('TwitterController -> auth -> called');
-         passport.authorize('twitter', (err, user) => {
-            if (err) {
-                console.log('TwitterController -> auth -> err');
-                return res.sendStatus(500);
-            }
-            if (!user) {
-                console.log('TwitterController -> auth -> no user');
-                //const identityKey = "${req.email}-{req.ip}"
-                return res.sendStatus(400);
-            }
-            return res.send(user);
-        })(req, res);
-    }
-
-    twitterAuthCallback(req, res) {
-        console.log('TwitterController -> auth callback -> called');
-        passport.authenticate('twitter', (err, user) => {
-            if (err) {
-                console.log('TwitterController -> auth callback -> err');
-                return res.sendStatus(500);
-            }
-            if (!user) {
-                console.log('TwitterController -> auth callback -> no user');
-                //const identityKey = "${req.email}-{req.ip}"
-                return res.sendStatus(400);
-            }
-            return res.send(user);
-        })(req, res);
+         passport.authenticate('twitter')(req, res);
     }
 
     twitterConnect(req, res) {
         console.log('TwitterController -> connect -> called');
-        passport.authorize('twitter', (err, user) => {
-            if (err) {
-                console.log('TwitterController -> connect -> err');
-                return res.sendStatus(500);
-            }
-            if (!user) {
-                console.log('TwitterController -> connect -> no user');
-                //const identityKey = "${req.email}-{req.ip}"
-                return res.sendStatus(400);
-            }
-            return res.send(user);
-        })(req, res);
+        passport.authorize('twitter')(req, res);
     }
 
-    twitterConnectCallback(req, res) {
-        console.log('TwitterController -> connect callback -> called');
+    twitterCallback(req, res) {
+        console.log('TwitterController -> callback -> called');
         passport.authorize('twitter', (err, user) => {
             if (err) {
-                console.log('TwitterController -> connect callback -> err');
+                console.log('TwitterController -> callback -> err');
+                console.log(err);
                 return res.sendStatus(500);
             }
             if (!user) {
-                console.log('TwitterController -> connect callback -> no user');
+                console.log('TwitterController -> callback -> no user');
                 //const identityKey = "${req.email}-{req.ip}"
                 return res.sendStatus(400);
             }

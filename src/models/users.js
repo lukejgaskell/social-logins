@@ -33,7 +33,7 @@ var UserSchema = new mongoose.Schema({
         id              : String,
         token           : String,
         email           : String,
-        displayName     : String
+        displayName     : String,
     }
 }, {
     timestamps: true

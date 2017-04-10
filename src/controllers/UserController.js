@@ -9,12 +9,7 @@ class UserController {
     }
 
     getUser(req, res) {
-       return res.json({ fullName: req.user.fullName,
-                    facebookAuth: req.user.facebook.accessToken !== undefined,
-                    twitterAuth: req.user.twitter.accessToken !== undefined,
-                    instagramAuth: req.user.instagram.accessToken !== undefined,
-                    googleAuth: req.user.google.accessToken !== undefined
-                });
+       return res.json(req.user);
     }
 
     revokeAuth(req, res) {
