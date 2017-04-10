@@ -144,226 +144,74 @@ class PassportConfig {
 
     facebookLogin(req, token, refreshToken, profile, cb) {
         console.log('PassportConfig -> facebookLogin() -> called');
-        process.nextTick(() => {
-            if (!req.user) {
-                Users.findOne({ 'facebook.id': profile.id }, (err, user) => {
-                    if (err) {
-                        console.log('PassportConfig -> facebookLogin() -> !req.user -> err');
-                        return cb(err);
-                    }
-                    if (user) {
-                        console.log('PassportConfig -> facebookLogin() -> !req.user -> user found');
-                        req.login(user, (err) => {
-                            if (err) {
-                                console.log('PassportConfig -> facebookLogin() -> !req.user -> login() -> err');
-                                return cb(err);
-                            }
-                            console.log('PassportConfig -> facebookLogin() -> !req.user -> login() -> success');
-                            return cb(null, user);
-                        });
-                    } else {
-                        var newUser = new Users();
-                        newUser.facebook.id = profile.id;
-                        newUser.facebook.token = token;
-                        newUser.facebook.displayName = profile.displayName;
-                        newUser.facebook.email = profile.email;
-                        newUser.save((err) => {
-                            if (err) {
-                                console.log('PassportConfig -> facebookLogin() -> !req.user -> save() -> err');
-                                return cb(err);
-                            }
-                            req.login(newUser, (err) => {
-                                if (err) {
-                                    console.log('PassportConfig -> facebookLogin() -> !req.user -> save() -> login() -> err');
-                                    return cb(err);
-                                }
-                                console.log('PassportConfig -> facebookLogin() -> !req.user -> save() -> login() -> success');
-                                return cb(null, newUser);
-                            });
-                        });
-                    }
-                });
-            } else {
-                var user = req.user;
-                user.facebook.id = profile.id;
-                user.facebook.token = token;
-                user.facebook.displayName = profile.displayName;
-                user.save((err) => {
-                    if (err) {
-                        return cb(err)
-                    }
-                    return cb(null, user);
-                });
-            }
-
-        });
+        this.doWork(req, 'facebook', profile, token, cb);
     }
 
     twitterLogin(req, token, refreshToken, profile, cb) {
         console.log('PassportConfig -> twitterLogin() -> called');
-        process.nextTick(() => {
-            if (!req.user) {
-                Users.findOne({ 'twitter.id': profile.id }, (err, user) => {
-                    if (err) {
-                        console.log('PassportConfig -> twitterLogin() -> !req.user -> err');
-                        return cb(err);
-                    }
-                    if (user) {
-                        console.log('PassportConfig -> twitterLogin() -> !req.user -> user exists');
-                        req.login(user, (err) => {
-                            if (err) {
-                                console.log('PassportConfig -> twitterLogin() -> !req.user -> login() -> err');
-                                return cb(err);
-                            }
-                            console.log('PassportConfig -> twitterLogin() -> !req.user -> login() -> success');
-                            return cb(null, user);
-                        });
-                    } else {
-                        var newUser = new Users();
-                        newUser.twitter.id = profile.id;
-                        newUser.twitter.token = token;
-                        newUser.twitter.displayName = profile.displayName;
-                        newUser.twitter.username = profile.username;
-                        newUser.save((err) => {
-                            if (err) {
-                                console.log('PassportConfig -> twitterLogin() -> !req.user -> save -> err');
-                                return cb(err);
-                            }
-                            req.login(newUser, (err) => {
-                                if (err) {
-                                    console.log('PassportConfig -> twitterLogin() -> !req.user -> save -> err');
-                                    return cb(err);
-                                }
-                                return cb(null, newUser);
-                            });
-                        });
-                    }
-                });
-            } else {
-                var user = req.user;
-                user.twitter.id = profile.id;
-                user.twitter.token = token;
-                user.twitter.displayName = profile.displayName;
-                user.twitter.username = profile.screen_name;
-                user.save((err) => {
-                    if (err) {
-                        return cb(err)
-                    }
-                    return cb(null, user);
-                });
-            }
-
-        });
+        this.doWork(req, 'twitter', profile, token, cb);
     }
 
     instagramLogin(req, token, refreshToken, profile, cb) {
-        console.log('PassportConfig -> instgramLogin() -> called');
-        process.nextTick(() => {
-            if (!req.user) {
-                Users.findOne({ 'instagram.id': profile.id }, (err, user) => {
-                    if (err) {
-                        console.log('PassportConfig -> instgramLogin() -> !req.user -> err');
-                        return cb(err);
-                    }
-                    if (user) {
-                        req.login(user, (err) => {
-                            if (err) {
-                                console.log('PassportConfig -> instagramLogin() -> !req.user -> user found -> login() -> err');
-                                return cb(err);
-                            }
-                            console.log('PassportConfig -> instagramLogin() -> !req.user -> user found -> login() -> success');
-                            return cb(null, user);
-                        });
-                    } else {
-                        var newUser = new Users();
-                        newUser.instagram.id = profile.id;
-                        newUser.instagram.token = token;
-                        newUser.instagram.displayName = profile.displayName;
-                        newUser.instagram.username = profile.username;
-                        newUser.save((err) => {
-                            if (err) {
-                                console.log('PassportConfig -> instgramLogin() -> !req.user -> save() -> err');
-                                return cb(err);
-                            }
-                            req.login(newUser, (err) => {
-                                if (err) {
-                                    console.log('PassportConfig -> instgramLogin() -> !req.user -> -> save() -> login() -> err');
-                                    return cb(err);
-                                }
-                                console.log('PassportConfig -> instgramLogin() -> !req.user -> save() -> login() -> err');
-                                return cb(null, newUser);
-                            });
-                        });
-                    }
-                });
-            } else {
-                var user = req.user;
-                user.instagram.id = profile.id;
-                user.instagram.token = token;
-                user.instagram.displayName = profile.displayName;
-                user.instagram.username = profile.username;
-                user.save((err) => {
-                    if (err) {
-                        console.log('PassportConfig -> instgramLogin() -> req.user -> save() -> err');
-                        return cb(err)
-                    }
-                    console.log('PassportConfig -> instgramLogin() -> req.user -> save() -> success');
-                    return cb(null, user);
-                });
-            }
-
-        });
+        console.log('PassportConfig -> instagramLogin() -> called');
+        this.doWork(req, 'instagram', profile, token, cb);
     }
 
     googleLogin(req, token, refreshToken, profile, cb) {
+        console.log('PassportConfig -> googleLogin() -> called');
+        this.doWork(req, 'google', profile, token, cb);
+    }
+
+
+    doWork(req, loginName, profile, token, cb) {
         process.nextTick(() => {
             if (!req.user) {
-                Users.findOne({ 'google.id': profile.id }, (err, user) => {
+                Users.findOne().where(loginName + '.id', profile.id).exec((err, user) => {
                     if (err) {
+                        console.log('PassportConfig -> doWork() -> !req.user -> err');
                         return cb(err);
                     }
                     if (user) {
                         req.login(user, (err) => {
                             if (err) {
-                                console.log('PassportConfig -> googleLogin() -> !req.user -> login() -> err');
+                                console.log('PassportConfig -> doWork() -> !req.user -> user found -> login() -> err');
                                 return cb(err);
                             }
-                            console.log('PassportConfig -> googleLogin() -> !req.user -> login() -> success');
+                            console.log('PassportConfig -> doWork() -> !req.user -> user found -> login() -> success');
                             return cb(null, user);
                         });
                     } else {
                         var newUser = new Users();
-                        newUser.google.id = profile.id;
-                        newUser.google.token = token;
-                        newUser.google.displayName = profile.displayName;
+                        newUser[loginName].id = profile.id;
+                        newUser[loginName].token = token;
+                        newUser[loginName].displayName = profile.displayName;
                         newUser.save((err) => {
                             if (err) {
-                                console.log('PassportConfig -> googleLogin() -> !req.user -> save() -> err');
+                                console.log('PassportConfig -> doWork() -> !req.user -> save() -> err');
                                 return cb(err);
                             }
                             req.login(newUser, (err) => {
                                 if (err) {
-                                    console.log('PassportConfig -> googleLogin() -> !req.user -> save() -> login() -> err');
+                                    console.log('PassportConfig -> doWork() -> !req.user -> -> save() -> login() -> err');
                                     return cb(err);
                                 }
-                                console.log('PassportConfig -> googleLogin() -> req.user -> save() -> login() -> success');
+                                console.log('PassportConfig -> doWork() -> !req.user -> save() -> login() -> err');
                                 return cb(null, newUser);
                             });
                         });
                     }
                 });
             } else {
-                console.log('PassportConfig -> googleLogin() -> req.user');
-                req.user.google.id = profile.id;
-                req.user.google.token = token;
-                req.user.google.displayName = profile.displayName;
                 var user = req.user;
+                user[loginName].id = profile.id;
+                user[loginName].token = token;
+                user[loginName].displayName = profile.displayName;
                 user.save((err) => {
                     if (err) {
-                        console.log('PassportConfig -> googleLogin() -> req.user -> save() -> err');
+                        console.log('PassportConfig -> doWork() -> req.user -> save() -> err');
                         return cb(err)
                     }
-                    console.log('PassportConfig -> googleLogin() -> req.user -> save() -> success');
+                    console.log('PassportConfig -> doWork() -> req.user -> save() -> success');
                     return cb(null, user);
                 });
             }
