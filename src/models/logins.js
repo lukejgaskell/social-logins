@@ -1,6 +1,6 @@
 
 
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 
 const LoginsSchema = new mongoose.Schema({
     identityKey: {
@@ -25,7 +25,7 @@ const LoginsSchema = new mongoose.Schema({
     }
 });
 
-LoginsSchema.static("canAuthenticate", function (key) {
+LoginsSchema.static('canAuthenticate', function (key) {
     console.log('LoginsDao -> canAuthenticate() -> called');
     const login = this.findOne({ identityKey: key }, function (err, data) {
         if (err) {
@@ -46,7 +46,7 @@ LoginsSchema.static("canAuthenticate", function (key) {
     return next();
 });
 
-LoginsSchema.static("failedLoginAttempt", function (key) {
+LoginsSchema.static('failedLoginAttempt', function (key) {
     console.log('LoginsDao -> failedLoginAttempt() -> called');
     const query = { identityKey: key };
     const update = { $inc: { failedAttempts: 1 }, timeout: new Date() };
@@ -59,7 +59,7 @@ LoginsSchema.static("failedLoginAttempt", function (key) {
     }).exec();
 });
 
-LoginsSchema.static("successfulLoginAttempt", function (key) {
+LoginsSchema.static('successfulLoginAttempt', function (key) {
     console.log('LoginsDao -> successfulLoginAttempt() -> called');
     const login = this.findOne({ identityKey: key }, function (err, data) {
         if (err) {
@@ -67,7 +67,7 @@ LoginsSchema.static("successfulLoginAttempt", function (key) {
         }
         return data;
     });
-    console.log("login: " + login);
+    console.log('login: ' + login);
     if (login) {
         return login.remove();
     }

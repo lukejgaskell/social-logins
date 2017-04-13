@@ -1,7 +1,7 @@
 
 
 var passport = require('passport');
-var Users = require('../models/users');
+var userRepository = require('../repositories/UserRepository');
 var LoginsDao = require('../models/logins');
 
 
@@ -23,8 +23,7 @@ class LoginController {
 
     login(req, res) {
         console.log('LoginController -> login() -> called');
-         passport.authenticate('local-login', (err, user) => {
-             console.log('user', user);
+        passport.authenticate('local-login', (err, user) => {
             if (err) {
                 console.log('LoginController -> login() -> err');
                 console.log(err);
@@ -36,7 +35,7 @@ class LoginController {
             }
             console.log('LoginController -> login() -> success');
             return res.sendStatus(200);
-         })(req, res);
+        })(req, res);
     }
     
 
@@ -56,8 +55,8 @@ class LoginController {
         })(req, res);
     }
 
-     activate(req, res) {
-        Users.activate(req.query, (err, user) => {
+    activate(req, res) {
+        userRepository.activate(req.query, (err, user) => {
             if (err) {
                 return res.sendStatus(500);
             }
@@ -69,7 +68,7 @@ class LoginController {
     }
 
     resendActivationEmail(req, res) {
-         Users.resendActivationEmail(req.body, function (err, success, info) {
+        userRepository.resendActivationEmail(req.body, function (err, success, info) {
             if (err) {
                 return res.sendStatus(500);
             }
@@ -81,7 +80,7 @@ class LoginController {
     }
 
     sendForgotPasswordEmail(req, res) {
-        Users.sendForgotPasswordEmail(req.body, (err, success) => {
+        userRepository.sendForgotPasswordEmail(req.body, (err, success) => {
             if (err) {
                 return res.sendStatus(500);
             }
@@ -93,7 +92,7 @@ class LoginController {
     }
 
     resetPassword(req, res) {
-        Users.resetPassword(req.body, function (err, user) {
+        userRepository.resetPassword(req.body, function (err, user) {
             if (err) {
                 return res.sendStatus(500);
             }

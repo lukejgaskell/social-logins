@@ -11,7 +11,7 @@ class TwitterController {
 
     twitterAuth(req, res) {
         console.log('TwitterController -> auth -> called');
-         passport.authenticate('twitter')(req, res);
+        passport.authenticate('twitter')(req, res);
     }
 
     twitterConnect(req, res) {

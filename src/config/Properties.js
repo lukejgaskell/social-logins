@@ -8,7 +8,7 @@ class Properties {
 
     getProperties() {
         if(this.properties === undefined) {
-            console.log("getProperties called without being set");
+            console.log('getProperties called without being set');
             return;
         }
         return this.properties;

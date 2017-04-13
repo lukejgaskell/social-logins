@@ -59,7 +59,7 @@ class PassportConfig {
 
     deserializeUser(id, cb) {
         Users.findById(id, (err, foundUser) => {
-            if(err) {
+            if (err) {
                 return cb(err);
             }
             if (!foundUser) {
@@ -72,12 +72,12 @@ class PassportConfig {
     localRegister(req, username, password, cb) {
         console.log('PassportConfig -> local-register -> called');
         process.nextTick(() => {
-            if (!req.user) {
-                Users.findOne({ 'local.email': username }, (err, user) => {
-                    if (err) {
-                        console.log('PassportConfig -> local-register -> !req.user -> err');
-                        return cb(err);
-                    }
+            Users.findOne({ 'local.email': username }, (err, user) => {
+                if (err) {
+                    console.log('PassportConfig -> local-register -> !req.user -> err');
+                    return cb(err);
+                }
+                if (!req.user) {
                     if (user) {
                         console.log('PassportConfig -> local-register -> !req.user -> email in use');
                         return cb(null, false);
@@ -85,54 +85,69 @@ class PassportConfig {
                         var newUser = new Users();
                         newUser.local.email = username;
                         newUser.local.password = newUser.generateHash(password);
+                        newUser.local.activationKey = newUser.generateRandomKey();
+                        newUser.local.fullName = req.body.fullName;
                         newUser.save((err) => {
                             if (err) {
                                 console.log('PassportConfig -> local-register -> !req.user -> save -> err');
                                 return cb(err);
-                            };
+                            }
                             console.log('PassportConfig -> local-register -> !req.user -> save -> success');
                             req.login(newUser, (err) => {
                                 if (err) {
                                     return cb(err);
                                 }
-                                return cb(null, newUser);
+                                return mailService.sendVerficationEmail(newUser, cb);
                             });
                         });
                     }
-                });
-            } else {
-                console.log('PassportConfig -> local-register -> !req.user -> called');
-                var user = req.user;
-                user.local.email = username;
-                user.local.password = user.generateHash(password);
-                user.save((err) => {
-                    if (err) {
-                        console.log('PassportConfig -> local-register -> req.user -> save -> err');
-                        return cb(err);
+                } else {
+                    console.log('PassportConfig -> local-register -> !req.user -> called');
+                    if (user) {
+                        console.log('PassportConfig -> local-register -> req.user -> email in use');
+                        return cb(null, false);
+                    } else {
+                        var currentUser = req.user;
+                        currentUser.local.email = username;
+                        currentUser.local.password = currentUser.generateHash(password);
+                        currentUser.save((err) => {
+                            if (err) {
+                                console.log('PassportConfig -> local-register -> req.user -> save -> err');
+                                return cb(err);
+                            }
+                            console.log('PassportConfig -> local-register -> req.user -> save -> success');
+                            return mailService.sendVerficationEmail(currentUser, cb);
+                        });
                     }
-                    console.log('PassportConfig -> local-register -> req.user -> save -> success');
-                    return cb(null, user);
-                });
-            }
+                }
+            });
         });
     }
 
     localLogin(req, username, password, cb) {
-        console.log("PassportConfig -> local-login -> called");
+        console.log('PassportConfig -> local-login -> called');
         Users.findOne({ 'local.email': username }, (err, user) => {
             if (err) {
-                console.log("PassportConfig -> local-login -> err");
+                console.log('PassportConfig -> local-login -> err');
                 return cb(err);
             }
             if (!user) {
-                console.log("PassportConfig -> local-login -> user not found");
+                console.log('PassportConfig -> local-login -> user not found');
                 return cb(null, false);
             }
             if (!user.validPassword(password)) {
-                console.log("PassportConfig -> local-login -> invalid password");
+                console.log('PassportConfig -> local-login -> invalid password');
                 return cb(null, false);
             }
-            console.log("PassportConfig -> local-login -> success");
+            if (user.local.activationKey !== null) {
+                console.log('PassportConfig -> local-login -> account not activated');
+                return cb(null, false);
+            }
+            if (user.local.forgottenPasswordKey !== null) {
+                user.local.forgottenPasswordKey = null;
+                user.save();
+            }
+            console.log('PassportConfig -> local-login -> success');
             req.login(user, (err) => {
                 if (err) {
                     return cb(err);
@@ -165,12 +180,12 @@ class PassportConfig {
 
     doWork(req, loginName, profile, token, cb) {
         process.nextTick(() => {
-            if (!req.user) {
-                Users.findOne().where(loginName + '.id', profile.id).exec((err, user) => {
-                    if (err) {
-                        console.log('PassportConfig -> doWork() -> !req.user -> err');
-                        return cb(err);
-                    }
+            Users.findOne().where(loginName + '.id', profile.id).exec((err, user) => {
+                if (err) {
+                    console.log('PassportConfig -> doWork() -> !req.user -> err');
+                    return cb(err);
+                }
+                if (!req.user) {
                     if (user) {
                         req.login(user, (err) => {
                             if (err) {
@@ -200,22 +215,25 @@ class PassportConfig {
                             });
                         });
                     }
-                });
-            } else {
-                var user = req.user;
-                user[loginName].id = profile.id;
-                user[loginName].token = token;
-                user[loginName].displayName = profile.displayName;
-                user.save((err) => {
-                    if (err) {
-                        console.log('PassportConfig -> doWork() -> req.user -> save() -> err');
-                        return cb(err)
+                } else {
+                    if (user) {
+                        return cb(null, false);
+                    } else {
+                        var user = req.user;
+                        user[loginName].id = profile.id;
+                        user[loginName].token = token;
+                        user[loginName].displayName = profile.displayName;
+                        user.save((err) => {
+                            if (err) {
+                                console.log('PassportConfig -> doWork() -> req.user -> save() -> err');
+                                return cb(err);
+                            }
+                            console.log('PassportConfig -> doWork() -> req.user -> save() -> success');
+                            return cb(null, user);
+                        });
                     }
-                    console.log('PassportConfig -> doWork() -> req.user -> save() -> success');
-                    return cb(null, user);
-                });
-            }
-
+                }
+            });
         });
     }
 }

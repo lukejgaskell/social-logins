@@ -8,6 +8,9 @@
     }
     var properties = {
         // session properties
+        protocol: "http",
+        domain: "localhost",
+        port: 4000,
         session: {
             SECRET: "YqcPmjUVLx.YJo^7HJdT3j4HvHopw^",
             DB_EXPIRE: 14 * 24 * 60 * 60,
@@ -19,7 +22,15 @@
         // email
         email: {
             USERNAME: 'notificationdashboard@gmail.com',
-            PASSWORD: 'hx(iuTiW8$GG7=zy3bjz'
+            PASSWORD: 'hx(iuTiW8$GG7=zy3bjz',
+            verificationEmail: {
+                subject: "Welcome to the app!",
+                html: "<div>click and stuff for stuff</div>"
+            },
+            forgotPasswordEmail: {
+                subject: "Guess you forgot your password!",
+                html: "<div>sucks to suck</div>"
+            }
         },
         // facebook
         facebook: {

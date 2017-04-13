@@ -4,12 +4,12 @@ var Users = require('../models/users');
 
 class UserController {
     createRoute(app) {
-        app.get("/api/user", isAuthenticated, this.getUser);
-        app.post("/api/user/revokeAuth", isAuthenticated, this.revokeAuth);
+        app.get('/api/user', isAuthenticated, this.getUser);
+        app.post('/api/user/revokeAuth', isAuthenticated, this.revokeAuth);
     }
 
     getUser(req, res) {
-       return res.json(req.user);
+        return res.json(req.user);
     }
 
     revokeAuth(req, res) {

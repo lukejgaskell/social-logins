@@ -28,7 +28,7 @@ class SessionConfig {
     }
 
     sessionConfig(db) {
-            return session({
+        return session({
             store: new MongoStore({
                 mongooseConnection: db,
                 ttl: properties.session.DB_EXPIRE
@@ -42,7 +42,7 @@ class SessionConfig {
                 httpOnly: true,
                 maxAge: properties.session.EXPIRE
             },
-            name: "id"
+            name: 'id'
         });
     }
 }

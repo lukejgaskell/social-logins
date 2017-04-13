@@ -15,18 +15,18 @@ class InstagramController {
     }
 
     instagramAuth(req, res) {
-         console.log('InstagramController -> auth -> called');
-         passport.authenticate('instagram')(req, res);
+        console.log('InstagramController -> auth -> called');
+        passport.authenticate('instagram')(req, res);
     }
 
     instagramConnect(req, res) {
-         console.log('InstagramController -> connect -> called');
-         passport.authorize('instagram')(req, res);
+        console.log('InstagramController -> connect -> called');
+        passport.authorize('instagram')(req, res);
     }
 
     instagramCallback(req, res) {
-            console.log('InstagramController -> connect callback -> called');
-            passport.authorize('instagram', (err, user) => {
+        console.log('InstagramController -> connect callback -> called');
+        passport.authorize('instagram', (err, user) => {
             if (err) {
                 console.log('InstagramController -> connect callback -> err');
                 return res.sendStatus(500);

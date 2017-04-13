@@ -15,62 +15,45 @@ class MailService {
     }
 
     sendVerficationEmail(newUser, cb) {
-        var domain = process.env.OPENSHIFT_APP_DNS || "localhost:4000";
         var message = {
             // sender info
             from: properties.email.USERNAME,
             // Comma separated list of recipients
-            to: newUser.email,
+            to: newUser.local.email,
             // Subject of the message
-            subject: 'NotificationDashboard account verification',
+            subject: properties.email.verificationEmail.subject,
             // HTML body
-            html: "<p>Welcome to NotificationDashboard!</p> <br>" +
-            "<p>Please click the following link to activate your account: </p>" +
-            "<a href='https://" + domain + "/api/activate?key=" + newUser.activationKey +
-            "&email=" + newUser.email + "'>activate account</a>"
+            html: properties.email.verificationEmail.html
+                                    .replace(/ACTIVATION-KEY/g, newUser.local.activationKey)
+                                    .replace(/USER-EMAIL/g, newUser.local.email)
         };
-        this.sendMessage(message, (error) => {
-            if (error) {
-                console.log('PassportConfig -> local-register -> sendVerficationEmail -> error');
-                return cb(null, false);
-            }
-            console.log('PassportConfig -> local-register -> sendVerficationEmail -> success');
-            return cb(null, newUser);
-        });
+        this.sendMessage(message, cb);
     }
 
     sendForgotPasswordEmail(user, cb) {
-        var domain = process.env.OPENSHIFT_APP_DNS || "localhost:4000";
         var message = {
             // sender info
             from: properties.email.USERNAME,
             // Comma separated list of recipients
-            to: user.email,
+            to: user.local.email,
             // Subject of the message
-            subject: 'NotificationDashboard password reset',
+            subject: properties.email.forgotPasswordEmail.subject,
             // HTML body
-            html: "<p>Please click the following link to reset your password: </p>" +
-            "<a href='https://" + domain + "/api/resetPassword?key=" + user.forgottenPasswordKey +
-            "&email=" + user.email + "'>reset password</a>"
+            html: properties.email.forgotPasswordEmail.html
+                                    .replace(/FORGOT-PASSWORD-KEY/g, user.local.forgottenPasswordKey)
+                                    .replace(/USER-EMAIL/g, user.local.email)
         };
-        this.sendMessage(message, (error) => {
-            if (error) {
-                console.log('PassportConfig -> local-register -> sendVerficationEmail -> error');
-                return cb(null, false);
-            }
-            console.log('PassportConfig -> local-register -> sendVerficationEmail -> success');
-            return cb(null, true);
-        });
+        this.sendMessage(message, cb);
     }
 
     sendMessage(message, cb) {
-        this.transport.sendMail(message, (error) => {
-            if (error) {
+        this.transport.sendMail(message, (err) => {
+            if (err) {
                 console.log('NodeMailerConfig -> sendMessage -> error');
-                return cb(error);
+                return cb(err);
             }
             console.log('NodeMailerConfig -> sendMessage -> success');
-            return cb();
+            return cb(null, true);
         });
     }
 }

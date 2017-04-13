@@ -1,10 +1,10 @@
 
-var FacebookController = require("./controllers/FacebookController.js");
-var TwitterController = require("./controllers/TwitterController.js");
-var InstagramController = require("./controllers/InstagramController.js");
-var GoogleController = require("./controllers/GoogleController.js");
-var LoginController = require("./controllers/LoginController.js");
-var UserController = require("./controllers/UserController.js");
+var FacebookController = require('./controllers/FacebookController.js');
+var TwitterController = require('./controllers/TwitterController.js');
+var InstagramController = require('./controllers/InstagramController.js');
+var GoogleController = require('./controllers/GoogleController.js');
+var LoginController = require('./controllers/LoginController.js');
+var UserController = require('./controllers/UserController.js');
 
 class Routes {
     createRoutes(app) {
