@@ -9,7 +9,13 @@ class UserController {
     }
 
     getUser(req, res) {
-        return res.json(req.user);
+        return res.json({
+            'local': req.user.local == null,
+            'facebook': req.user.facebook == null,
+            'twitter': req.user.twitter == null,
+            'instagram': req.user.instagram == null,
+            'google': req.user.google == null
+        });
     }
 
     revokeAuth(req, res) {

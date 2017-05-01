@@ -2,7 +2,6 @@
 
 var passport = require('passport');
 var userRepository = require('../repositories/UserRepository');
-var LoginsDao = require('../models/logins');
 
 
 class LoginController {
