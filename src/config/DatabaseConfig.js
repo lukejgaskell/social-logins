@@ -1,15 +1,11 @@
 
 var bluebird = require('bluebird');
 var mongoose = require('mongoose');
-var connection_string = 'mongodb://localhost/accounts';
+var properties = require('./properties');
 
-if(process.env.OPENSHIFT_MONGODB_DB_USERNAME){
-  connection_string = 'mongodb://' + process.env.OPENSHIFT_MONGODB_DB_USERNAME + ':' + 
-  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + '@' + 
-  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + 
-  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' + 
-  process.env.OPENSHIFT_APP_NAME
-}
+
+var connection_string = 'mongodb://' + properties.database.url + '/' + properties.database.name;
+
 mongoose.Promise = bluebird;
 mongoose.connect(connection_string);
 var db = mongoose.connection;

@@ -10,7 +10,7 @@ module.exports = {
 
 async function isAuthenticated(req, res, next) {
   try {
-    var decoded = jwt.verify(req.query.auth, properties.jwt.secret);
+    var decoded = jwt.verify(req.get('auth'), properties.jwt.secret);
   } catch (e) {
     return res.sendStatus(403);
   }

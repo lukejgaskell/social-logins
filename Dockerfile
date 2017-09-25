@@ -1,15 +1,15 @@
+# create a file named Dockerfile
+FROM node:latest
 
-FROM node:boron
+RUN mkdir /app
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Bundle app source
-COPY . /usr/src/app
+COPY package.json /app
 
-# Install app dependencies
 RUN npm install
 
-EXPOSE 8080
-CMD [ "npm", "start" ]
+COPY . /app
+
+EXPOSE 3000
+CMD ["npm", "start"]

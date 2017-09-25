@@ -6,11 +6,11 @@ var app = express();
 var path = require('path');
 
 
-var db = require('./src/config/DatabaseConfig.js');
-var passportConfig = require("./src/config/PassportConfig");
+var db = require('./config/DatabaseConfig.js');
+var passportConfig = require("./config/PassportConfig");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var routes = require("./src/routes");
+var routes = require("./routes");
 
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;

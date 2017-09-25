@@ -6,7 +6,7 @@ class UserController {
     createRoute(app) {
         app.get('/api/user', isAuthenticated, this.getUser);
     }
-
+    
     getUser(req, res) {
         return res.json(req.user);
     }
