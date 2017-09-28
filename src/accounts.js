@@ -14,7 +14,7 @@ var routes = require("./routes");
 
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-const PORT = 8080;
+const PORT = 8000;
 const HOST = '0.0.0.0';
 
 if (cluster.isMaster) {
