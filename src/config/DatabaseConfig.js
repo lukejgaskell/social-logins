@@ -1,7 +1,6 @@
 
 var bluebird = require('bluebird');
 var mongoose = require('mongoose');
-var properties = require('./properties');
 
 
 var connection_string = process.env.MONGO_URL;

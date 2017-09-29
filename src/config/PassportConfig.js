@@ -3,7 +3,7 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var UserProfiles = require('../models/user-profile.model');
 var FacebookLogins = require('../models/facebook-login.model');
-var properties = require('./properties');
+var properties = require('./properties.js');
 var passportJWT = require('passport-jwt');
 
 var ExtractJwt = passportJWT.ExtractJwt;
