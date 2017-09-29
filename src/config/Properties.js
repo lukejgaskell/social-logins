@@ -1,5 +1,5 @@
 
-var properties = {
+module.exports = {
     protocol: "http",
     domain: "localhost",
     port: 8000,
@@ -20,5 +20,3 @@ var properties = {
         secret: "Fawe46AFUu2eJEkgfzhBcBmYtuz9jJe7KTVPmWq&U]fskx/DUZLtDgHB^oxL7GzW"
     }
 };
-
-module.exports = properties;
