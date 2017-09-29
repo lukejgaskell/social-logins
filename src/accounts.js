@@ -3,10 +3,9 @@
 var express = require('express');
 var app = express();
 
+
 var path = require('path');
 
-
-var db = require('./config/DatabaseConfig.js');
 var passportConfig = require("./config/PassportConfig");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
