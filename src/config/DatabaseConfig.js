@@ -4,10 +4,10 @@ var mongoose = require('mongoose');
 var properties = require('./properties');
 
 
-var connection_string = 'mongodb://' + properties.database.url + '/' + properties.database.name;
+var connection_string = process.env.MONGO_URL;
 
 mongoose.Promise = bluebird;
-mongoose.connect(connection_string);
+mongoose.connect(connection_string, {useMongoClient: true});
 var db = mongoose.connection;
 
 module.exports = db;
