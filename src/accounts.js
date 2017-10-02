@@ -6,7 +6,6 @@ var app = express();
 var path = require('path');
 
 var db = require('./config/DatabaseConfig');
-var properties = require('./config/properties');
 var passportConfig = require("./config/PassportConfig");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
