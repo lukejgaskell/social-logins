@@ -14,4 +14,4 @@ RUN npm install
 COPY . /app
 
 EXPOSE 8000
-CMD ["pm2-docker", "./src/accounts.js"]
+CMD ["node", "./src/accounts.js"]
