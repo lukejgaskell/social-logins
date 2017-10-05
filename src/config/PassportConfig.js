@@ -46,7 +46,7 @@ class PassportConfig {
             console.log(e);
             return cb(e);
         }
-        console.log(user.displayName + ' successfully logged in via facebook');
+        console.log(profile.displayName + ' successfully logged in via facebook');
         return cb(null, facebookLogin);
     }
 }
