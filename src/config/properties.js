@@ -3,7 +3,8 @@
 var config = {};
 
 config.protocol = process.env.PROTOCOL || "http";
-config.domain = process.env.HOST || "0.0.0.0";
+config.domain = process.env.DOMAIN || "0.0.0.0";
+config.host = process.env.HOST || "0.0.0.0";
 config.port = process.env.PORT || 8000;
 config.database = {
     url: process.env.MONGO_URL || 'mongodb://mongo/accounts'

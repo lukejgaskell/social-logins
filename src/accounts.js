@@ -14,7 +14,7 @@ var fs = require('fs');
 var helmet = require('helmet');
 
 const PORT = properties.port;
-const HOST = properties.domain;
+const HOST = properties.host;
 
 var controllers = readDirectory('./src');
 
