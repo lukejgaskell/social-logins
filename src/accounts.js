@@ -17,14 +17,14 @@ const HOST = properties.host;
 
 var controllers = readDirectory('./src');
 
-controllers.forEach(controllerFile => {
-    require('../' + controllerFile)(app);
-});
-
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 passportConfig.configure(app);
+
+controllers.forEach(controllerFile => {
+    require('../' + controllerFile)(app);
+});
 
 app.listen(PORT, HOST, () => {
     console.log(`listening on ${properties.protocol}://${HOST}:${PORT}!`);

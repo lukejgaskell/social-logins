@@ -11,8 +11,7 @@ config.database = {
 };
 config.facebook = {
     APP_ID: 2123391177888299,
-    APP_SECRET: "7ba9062fb6cffa18fbe44a6cc15df413",
-    CALLBACK_URL: process.env.FACEBOOK_CALLBACK_URL || 'https://events.gaskellsolutions.com/api/facebook/callback'
+    APP_SECRET: "7ba9062fb6cffa18fbe44a6cc15df413"
 };
 config.jwt = {
     secret: "Fawe46AFUu2eJEkgfzhBcBmYtuz9jJe7KTVPmWq&U]fskx/DUZLtDgHB^oxL7GzW"

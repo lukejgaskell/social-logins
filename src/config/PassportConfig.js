@@ -1,6 +1,6 @@
 
 var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token');
 var UserProfiles = require('../models/user-profile.model');
 var FacebookLogins = require('../models/facebook-login.model');
 var passportJWT = require('passport-jwt');
@@ -14,10 +14,10 @@ var JwtStrategy = passportJWT.Strategy;
 class PassportConfig {
     configure(app) {
         app.use(passport.initialize());
-        passport.use('facebook', new FacebookStrategy({
+        console.log('its been intialized');
+        passport.use('facebook-token', new FacebookTokenStrategy({
             clientID: properties.facebook.APP_ID,
-            clientSecret: properties.facebook.APP_SECRET,
-            callbackURL: properties.facebook.CALLBACK_URL
+            clientSecret: properties.facebook.APP_SECRET
         }, this.facebookLogin.bind(this)));
     }
 
